@@ -1,0 +1,6 @@
+<% 10.times do |n| %>
+  orange_<%= n %>:
+    name: orange_<%= n %>
+    email:  testuser_<%= n %>@gmail.com
+    password_digest: <%= User.digest("password") %>
+<% end %>
