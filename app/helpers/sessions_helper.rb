@@ -21,7 +21,7 @@ module SessionsHelper
   end
 
   def current_user?(user)
-    @current_user == user
+    current_user == user
   end
 
   def current_user
@@ -45,4 +45,13 @@ module SessionsHelper
       session.delete(:user_id)
     end 
   end 
+
+  def location_url
+    session[:forwarding_url] = request.original_url if request.get?
+  end
+
+  def redirect_hisotry(default)
+    redirect_to ( session[:forwarding_url] || default )
+    session.delete(:forwarding_url)
+  end
 end

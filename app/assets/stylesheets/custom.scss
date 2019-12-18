@@ -1,2 +1,20 @@
 @import 'bootstrap';
 @import 'bootstrap-sprockets';
+* {
+    list-style: none;
+}
+
+.vertical {
+    padding: 0 3px 0 3px;
+    border-right: solid rgb(144, 139, 139);
+}
+
+.under_line {
+    border-bottom: solid rgb(109, 103, 103);
+    padding-bottom: 5px;
+}
+
+.color_box {
+    background: cyan;
+    margin: auto;
+}

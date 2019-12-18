@@ -1,6 +1,12 @@
+ishizaki:
+  name: ishizaki
+  email: ishizaki@gmail.com
+  password_digest: <%=  User.digest("password") %> 
+  admin: true
+
 <% 10.times do |n| %>
-  orange_<%= n %>:
-    name: orange_<%= n %>
-    email:  testuser_<%= n %>@gmail.com
-    password_digest: <%= User.digest("password") %>
+orange_<%= n %>:
+  name: orange_<%= n %>
+  email:  testuser_<%= n %>@gmail.com
+  password_digest: <%= User.digest("password") %>
 <% end %>

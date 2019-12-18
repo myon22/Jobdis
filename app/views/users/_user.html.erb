@@ -1,0 +1,10 @@
+<ul>
+  <% if current_user != user %>
+    <li class="under_line"><%= gravater_for(user) %><%= link_to user.name , user ,class:"vertical"%>
+    <% if current_user.admin? %>
+      <span><%= link_to 'ユーザー削除', user ,method: :delete,
+                                data:{confim:"本当に削除しますか？"} %></span>
+    <% end %>
+    </li>
+  <% end %>
+</ul>

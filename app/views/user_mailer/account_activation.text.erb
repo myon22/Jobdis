@@ -1,0 +1,8 @@
+<%= @user.name %>さん
+
+ユーザー登録ありがとうございます。
+
+以下のボタンをクリックしてアカウントの有効化をしてください。
+
+<%= link_to "ユーザーアカウントの有効化", edit_account_activation_url(@user.activation_token,email:@user.email),class:"btn btn-default" %>
+

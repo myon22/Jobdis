@@ -1,0 +1,9 @@
+<h1><%= @user.name %>さん</h1>
+
+<h2>ユーザー登録ありがとうございます。</h2>
+
+<p>以下のボタンをクリックしてアカウントの有効化をしてください。</p>
+
+<div class="color_box container">
+  <%= link_to "ユーザーアカウントの有効化", edit_account_activation_url(@user.activation_token,email:@user.email),class:"btn btn-default" %>
+</div>
