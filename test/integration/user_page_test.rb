@@ -3,6 +3,7 @@ require 'test_helper'
 class UserPageTest < ActionDispatch::IntegrationTest
   def setup 
     @user = users(:ishizaki)
+    @other_user = users(:orange_0)
   end
 
   test "before index login" do 
@@ -19,5 +20,11 @@ class UserPageTest < ActionDispatch::IntegrationTest
     User.paginate(page: 1).each do |user|
       assert_select 'a[href=?]' ,user_path(user)
     end
+  end
+
+  test "correct_user" do
+    login_test(@user)
+    get edit_user_path(@other_user)
+    assert_redirected_to root_path
   end
 end
