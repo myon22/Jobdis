@@ -3,6 +3,7 @@ require 'test_helper'
 class UserSignupLoginTest < ActionDispatch::IntegrationTest
   def setup 
     @user = users(:orange_1)
+    ActionMailer::Base.deliveries.clear
   end
 
   test "user signup failure" do
@@ -29,17 +30,22 @@ class UserSignupLoginTest < ActionDispatch::IntegrationTest
                                            password:password,
                                            password_confirmation:password}}
       end 
-      follow_redirect!
-      assert_template "users/show"
-      assert logged_in_check
-      assert_select "a[href=?]" , login_path,count:0
-      assert_select "a[href=?]" , signup_path,count:0
-      assert_select "a[href=?]" , logout_path,count:1
-      assert_select "div","ユーザー登録に成功しました"
-      #以下ログアウトテスト
-      delete logout_path
-      assert session[:user_id].nil?
+      assert_equal 1 ,ActionMailer::Base.deliveries.size
+      user = assigns(:user)
+      assert_not user.activated?
       assert_not logged_in_check
+        # 有効化トークンが不正な場合
+      get edit_account_activation_path("invalid token", email: user.email)
+      assert_not logged_in_check
+      # トークンは正しいがメールアドレスが無効な場合
+      get edit_account_activation_path(user.activation_token, email: 'wrong')
+      assert_not logged_in_check
+      # 有効化トークンが正しい場合
+      get edit_account_activation_path(user.activation_token, email: user.email)
+      assert user.reload.activated?
+      follow_redirect!
+      assert_template 'users/show'
+      assert logged_in_check
     end
 
     #remember_meテスト
@@ -56,7 +62,6 @@ class UserSignupLoginTest < ActionDispatch::IntegrationTest
       login_test(@user,remember_me:"0")
       assert logged_in_check
       assert_empty cookies["remember_token"]
-
     end
     
     test "only login" do 

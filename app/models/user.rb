@@ -38,7 +38,7 @@ class User < ApplicationRecord
 
     def authenticated?(name,token)
       digest = send("#{name}_digest")
-      BCrypt::Password.new(digest).is_password?(params)
+      BCrypt::Password.new(digest).is_password?(token)
     end
 
     def forget
