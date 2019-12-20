@@ -1,6 +1,66 @@
 class PasswordResetsController < ApplicationController
+  #before_action :get_user,         only: [:edit, :update]
+  before_action :valid_user,       only: [:edit, :update]
+  before_action :check_time,       only: [:edit, :update]    # (1) への対応
+
+  def new 
+  end
+
+  def create
+    @user = User.find_by(email: params[:reset_pass][:email].downcase)
+    if @user
+      @user.create_reset_digest
+      @user.send_reset_email
+      flash[:info] = "Email sent with password reset instructions"
+      redirect_to root_url
+    else
+      flash.now[:danger] = "Email address not found"
+      render 'new'
+    end
+  end
 
   def edit
+    @user = User.find_by(email: params[:email])
+  end
+
+  def update
+    if params[:user][:password].empty?                  # (3) への対応
+      @user.errors.add(:password, :blank)
+      render 'edit'
+    elsif @user.update_attributes(password_params)          # (4) への対応
+      log_in @user
+      flash[:success] = "Password has been reset."
+      redirect_to @user
+    else
+      render 'edit'                                     # (2) への対応
+    end
+  end
+
+  private
+
+  def password_params
+    params.require(:user).permit(:password,:password_confirmation)
   end
   
+    def get_user
+      @user = User.find_by(email: params[:email])
+    end
+
+    # 有効なユーザーかどうか確認する
+    def valid_user
+      unless (@user && @user.activated? &&
+              @user.authenticated?(:reset, params[:id]))
+        redirect_to root_url
+      end
+    end
+  
+
+
+    def check_time
+      if @user.password_reset_expire?
+        flash[:danger] = "メールの有効機嫌が切れています."
+        redirect_to new_password_reset_url
+      end
+    end
+
 end

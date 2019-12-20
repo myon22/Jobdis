@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   def create 
     @user = User.new(user_params)
     if @user.save
-      UserMailer.account_activation(@user).deliver_now
+      @user.send_activation_email
       flash[:info] = "メールを送りました。ご確認お願いいたします。" 
       redirect_to root_path
     else
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    if @user.update_attributes(:name,params[:name])
+    if @user.update_attributes(name:params[:user][:name])
       flash[:success] = "編集に成功しました"
       redirect_hisotry(@user)
     else

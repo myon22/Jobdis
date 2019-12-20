@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'test_helper'
 
 class UserSignupLoginTest < ActionDispatch::IntegrationTest
@@ -51,7 +52,7 @@ class UserSignupLoginTest < ActionDispatch::IntegrationTest
     #remember_meテスト
 
     test "remember_me" do
-      get login_path
+     get login_path
       #チェックボックスをオン
       login_test(@user,remember_me:"1")
       assert logged_in_check

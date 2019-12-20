@@ -1,6 +1,6 @@
 class AddPasswordResetToUsers < ActiveRecord::Migration[6.0]
   def change
     add_column :users, :reset_digest, :string
-    add_column :users, :reset_at, :Datetime
+    add_column :users, :reset_at, :datatime
   end
 end
