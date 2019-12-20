@@ -7,17 +7,14 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(email:params[:reset_param][:email])
-    if @user && @user.activated? 
+    @user = User.find_by(email:params[:reset_param][:email].downcase) 
+    if @user
       @user.create_reset_digest
       @user.send_reset_email
       flash[:info] = "メールを送りました、ご確認ください。"
       redirect_to root_path
-    elsif @user && !@user.activated?
-      flash[:danger] = "ユーザーが有効化されていません"
-      render "new"
     else
-      flash[:danger] = "メールアドレスが正しくありません"
+      flash.now[:danger] = "メールアドレスが正しくありません"
       render "new"
     end
   end
