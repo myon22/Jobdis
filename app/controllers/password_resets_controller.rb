@@ -12,6 +12,7 @@ class PasswordResetsController < ApplicationController
       @user.create_reset_digest
       @user.send_reset_email
       flash[:info] = "メールを送りました、ご確認ください。"
+      redirect_to root_path
     elsif @user && !@user.activated?
       flash[:danger] = "ユーザーが有効化されていません"
       render "new"
