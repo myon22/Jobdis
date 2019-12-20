@@ -1,16 +1,14 @@
-<%= provide(:title,"メール送信用") %>
+<%= provide(:title,"パスワード設定用") %>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-3 col-offset-6">
-    <%= form_for(:reset_pass, url: password_resets_path) do |f| %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(:reset_param) do |f| %>
 
       <%= f.label :email %>
-      <%= f.email_field :email ,class:"form-control"%>
+      <%= f.email_field :email ,class:"form-control" %>
 
-      <%= f.submit "メールを送信" ,class:"btn btn-primary" %>
+      <%= f.submit "メール送信" ,class:"btn btn-primary" %>
 
     <% end %>
-    </div>
   </div>
 </div>

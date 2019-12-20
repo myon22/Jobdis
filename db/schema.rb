@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_170843) do
     t.datetime "activate_at"
     t.string "activate_digest"
     t.string "reset_digest"
-    t.time "reset_at"
+    t.datetime "reset_at"
     t.index ["email"], name: "index_users_on_email"
   end
 

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'password_resets/new'
+  get 'password_resets/edit'
   root "start_pages#home"
   get "/about",     to:'start_pages#about'
   get "/contact",   to:'start_pages#contact'
