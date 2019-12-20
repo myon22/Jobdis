@@ -22,5 +22,11 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     assert user.reset_token
     get edit_password_reset_path(user.reset_token, email: user.email)
     assert_template "password_resets/edit"
+    patch password_reset_path(user.reset_token),
+                              params:{email: user.email,
+                             user: {password: "password",
+                                     password_confirmation: "password"}}
+    user = assigns(:user)
+    assert logged_in_check
   end
 end

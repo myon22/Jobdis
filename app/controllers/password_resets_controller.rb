@@ -29,10 +29,10 @@ class PasswordResetsController < ApplicationController
     if params[:user][:password].empty?
       @user.errors.add(:password ,"パスワードが入力されていません。")
       render 'edit'
-    elsif @user.authenticate(pass_params)
-      @user.update_attribute(:password_digest,User.digest(params[:user][:password]))
+    elsif @user.update_attributes(pass_params)
+      log_in @user
       flash[:success] = "パスワードの再設定に成功しました。"
-      redirect_to @user_path
+      redirect_to @user
     else
       flash[:danger] = "パスワードが一致しません"
       render 'edit'
